@@ -1,6 +1,7 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import translate from '../../../locale';
 
@@ -14,7 +15,7 @@ const UserDetails = ({ details: { regions, tsn, personalInfo: { name, email, img
   return (
     <div className="user-details-container">
       <section className="profile">
-        <img src={img} alt="user_profile_pic" />
+        <LazyLoadImage src={img} alt="user_profile_pic" />
         <div>
           <div>{`${name} (${tsn})`}</div>
           <div>{email}</div>
@@ -31,7 +32,7 @@ const UserDetails = ({ details: { regions, tsn, personalInfo: { name, email, img
                 {
                   channel.map(({ channelNumber, name: channelName, img: channelImg }) => (
                     <li>
-                      <img src={channelImg} alt="channel_img" />
+                      <LazyLoadImage src={channelImg} alt="channel_img" />
                       <p>{channelName}</p>
                     </li>
                   ))
@@ -47,7 +48,7 @@ const UserDetails = ({ details: { regions, tsn, personalInfo: { name, email, img
           {
             addOnServices.map(({ name: addonsName, id: addonsId, price, image: addonsImg }) => (
               <li key={`pkg-${addonsId}`}>
-                <img src={addonsImg} alt="addons_img" />
+                <LazyLoadImage src={addonsImg} alt="addons_img" />
                 <div>{addonsName}</div>
                 <div>{`${price}Rs`}</div>
               </li>

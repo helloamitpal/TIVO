@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import './UserRow.scss';
 
 const UserRow = ({ personalInfo: { name, email, img }, index, style, className, onClick }) => (
   <div style={style} className={`virtual-row ${className}`}>
-    <img src={img} alt="user-profile-pic" />
+    <LazyLoadImage src={img} alt="user-profile-pic" />
     <div className="row-content">
       <div>{name}</div>
       <div>{email}</div>
