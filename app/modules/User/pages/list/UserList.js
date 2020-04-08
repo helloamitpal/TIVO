@@ -11,27 +11,22 @@ import LoadingIndicator from '../../../../components/atoms/LoadingIndicator';
 import Modal from '../../../../components/atoms/Modal';
 import Message from '../../../../components/atoms/Message';
 import translate from '../../../../locale';
-import Row from '../../templates/Row';
+import UserRow from '../../templates/UserRow';
+import UserDetails from '../../templates/userDetails';
 
 import '../../User.scss';
 
 const UserListPage = ({
-  scrapperState: { loading, savedLinks, errors, removeLinkSuccess, previewContent },
-  scrapperActions
+  userState: { loading, users, errors },
+  userActions
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(-1);
 
   // make api call at the begining to fetch all saved links
   useEffect(() => {
-    scrapperActions.fetchSavedLinks();
-  }, [scrapperActions]);
-
-  // showing toaser message for successful removal of link
-  useEffect(() => {
-    if (removeLinkSuccess) {
-      toast.success(translate('scrapper.removeSuccess'));
-    }
-  }, [removeLinkSuccess]);
+    userActions.getUsers();
+  }, [userActions]);
 
   // show toast message if any errror occurrs
   useEffect(() => {
@@ -40,73 +35,58 @@ const UserListPage = ({
     }
   }, [errors]);
 
-  // opening modal when preview content arrived
-  useEffect(() => {
-    if (previewContent) {
-      setModalOpen(true);
-    }
-  }, [previewContent]);
-
-  const onPreview = (link) => {
-    scrapperActions.getLinkPreview(link);
-  };
-
   const head = (
-    <Helmet key="scrapper-page">
-      <title>{translate('scrapper.listTitle')}</title>
-      <meta property="og:title" content="Scrapper saved links" />
+    <Helmet key="user-list-page">
+      <title>{translate('user.listTitle')}</title>
+      <meta property="og:title" content="User list" />
       <meta
         name="description"
-        content="Get list of all hyperlinks available in a web page from a given URL"
+        content="Get list of all users in TIVO"
       />
       <meta name="robots" content="index, follow" />
     </Helmet>
   );
 
-  const onRemoveBookmark = (index) => {
-    const { id } = savedLinks[index];
-    scrapperActions.removeLink(id);
+  const onOpenUserDetails = (index) => {
+    setSelectedUser(index);
+    setModalOpen(true);
   };
 
   return (
-    <div className="scrapper-page-container row">
+    <div className="user-page-container row">
       {head}
       {loading && <LoadingIndicator />}
-      {modalOpen && previewContent && (
-        <Modal onClose={() => setModalOpen(false)} content={previewContent} />
+      {modalOpen && (
+        <Modal onClose={() => setModalOpen(false)}><UserDetails details={users[selectedUser]} /></Modal>
       )}
-      <div className="sub-title">{translate('scrapper.rowCountTitle', { COUNT: savedLinks.length })}</div>
       <div className="links-list-container">
-        {savedLinks.length
+        {users.length
           ? (
             <VirtualList
               height={400}
               width="100%"
-              itemCount={savedLinks.length}
+              itemCount={users.length}
               itemSize={60}
               renderItem={({ index, style }) => {
-                const { href, ...rest } = savedLinks[index];
+                const { href, ...rest } = users[index];
                 const rowProps = {
                   index,
                   style,
                   className: 'virtual-row',
-                  isSaved: true,
-                  href,
                   ...rest
                 };
 
                 return (
-                  <Row
+                  <UserRow
                     key={`list-row-${index.toString()}`}
-                    onPreview={() => onPreview(href)}
                     {...rowProps}
-                    onClick={onRemoveBookmark}
+                    onClick={onOpenUserDetails}
                   />
                 );
               }}
             />
           )
-          : <Message description={translate('scrapper.noSavedLink')} />
+          : <Message description={translate('user.noUserFound')} />
         }
       </div>
     </div>
