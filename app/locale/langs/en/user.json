@@ -3,5 +3,6 @@
   "noUserFound": "No user found",
   "addedPkgTitle": "Added Packages",
   "addedAddonsPkgTitle": "Added Addons Packages",
-  "searchByNamePlaceholder": "Search by name"
+  "searchByNamePlaceholder": "Search by name",
+  "createUser": "Create User"
 }

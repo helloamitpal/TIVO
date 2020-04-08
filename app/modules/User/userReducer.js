@@ -10,7 +10,7 @@ const initialState = {
   loading: false
 };
 
-const articleReducer = (state = initialState, action = '') => {
+const userReducer = (state = initialState, action = '') => {
   const { type, payload } = action;
 
   switch (type) {
@@ -54,4 +54,4 @@ const articleReducer = (state = initialState, action = '') => {
   }
 };
 
-export default articleReducer;
+export default userReducer;

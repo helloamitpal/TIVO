@@ -20,7 +20,7 @@ const Header = ({ onChangeLocale }) => {
       <nav className="red">
         <div className="container">
           <div className="nav-wrapper">
-            <a href={config.SCRAPPER_PAGE} className="brand-logo">
+            <a href={config.USER_LIST_PAGE} className="brand-logo">
               {translate('common.appName')}
             </a>
             <LocaleSelector className="right" onChangeLocale={onChangeLocale} />
@@ -44,13 +44,30 @@ const Header = ({ onChangeLocale }) => {
                 <div className="divider" />
               </li>
               <li>
-                <Link to={config.SCRAPPER_PAGE} className="item" onClick={toggleMenu}>
+                <Link to={config.USER_LIST_PAGE} className="item" onClick={toggleMenu}>
                   {translate('common.home')}
                 </Link>
               </li>
               <li>
-                <Link to={config.SCRAPPER_SAVED_LINKS_PAGE} className="item" onClick={toggleMenu}>
-                  {translate('scrapper.listTitle')}
+                <Link to={config.USER_CREATE_PAGE} className="item" onClick={toggleMenu}>
+                  {translate('user.createUser')}
+                </Link>
+              </li>
+              <li>
+                <Link to={config.DASHBOARD_PAGE} className="item" onClick={toggleMenu}>
+                  {translate('dashboard.title')}
+                </Link>
+              </li>
+            </ul>
+            <ul id="nav-mobile" className="right hide-on-med-and-down">
+              <li>
+                <Link to={config.USER_CREATE_PAGE} className="item">
+                  {translate('user.createUser')}
+                </Link>
+              </li>
+              <li>
+                <Link to={config.DASHBOARD_PAGE} className="item">
+                  {translate('dashboard.title')}
                 </Link>
               </li>
             </ul>

@@ -23,7 +23,7 @@ const UserListPage = ({
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  // make api call at the begining to fetch all saved links
+  // make api call at the begining to fetch all users
   useEffect(() => {
     userActions.getUsers();
   }, [userActions]);
