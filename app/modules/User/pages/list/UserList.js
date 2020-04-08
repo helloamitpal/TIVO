@@ -53,13 +53,13 @@ const UserListPage = ({
   };
 
   return (
-    <div className="user-page-container row">
+    <div className="user-page-container">
       {head}
       {loading && <LoadingIndicator />}
       {modalOpen && (
         <Modal onClose={() => setModalOpen(false)}><UserDetails details={users[selectedUser]} /></Modal>
       )}
-      <div className="links-list-container">
+      <div className="list-container">
         {users.length
           ? (
             <VirtualList
@@ -72,7 +72,6 @@ const UserListPage = ({
                 const rowProps = {
                   index,
                   style,
-                  className: 'virtual-row',
                   ...rest
                 };
 

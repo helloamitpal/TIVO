@@ -1,40 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Row = ({ text, href, isSaved, index, style, className, onClick, onPreview }) => (
-  <div style={style} className={className}>
-    <button type="button" className="preview" onClick={onPreview}>
+import './UserRow.scss';
+
+const UserRow = ({ personalInfo: { name, email, img }, index, style, className, onClick }) => (
+  <div style={style} className={`virtual-row ${className}`}>
+    <img src={img} alt="user-profile-pic" />
+    <div className="row-content">
+      <div>{name}</div>
+      <div>{email}</div>
+    </div>
+    <button type="button" className="preview" onClick={onClick}>
       <span className="material-icons">pageview</span>
     </button>
-    <div className="row-content">
-      <div>{text}</div>
-      <div>{href}</div>
-    </div>
-    {onClick ? (
-      <button type="button" className="bookmark" onClick={() => onClick(index, isSaved)}>
-        <span className="material-icons">
-          {isSaved ? 'bookmark' : 'bookmark_border'}
-        </span>
-      </button>
-    ) : null}
   </div>
 );
 
-Row.defaultProps = {
+UserRow.defaultProps = {
   style: {},
-  className: '',
-  onClick: null
+  className: ''
 };
 
-Row.propTypes = {
-  text: PropTypes.string.isRequired,
-  href: PropTypes.string.isRequired,
-  isSaved: PropTypes.bool.isRequired,
+UserRow.propTypes = {
+  personalInfo: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  onPreview: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
   style: PropTypes.object,
-  className: PropTypes.string,
-  onClick: PropTypes.func
+  className: PropTypes.string
 };
 
-export default Row;
+export default UserRow;

@@ -1,4 +1,13 @@
-import * as actionTypes from './scrapperActionTypes';
+import * as actionTypes from './userActionTypes';
+
+export const getUsers = (searchBy = '', searchStr = '') => (dispatch, getState, { api }) => {
+  const param = (searchBy && searchStr) ? `?find=personalInfo.${searchBy}:${searchStr}` : '';
+  dispatch({
+    type: actionTypes.GET_USERS,
+    promise: api.get(`/api/customerInfo${param}`),
+    payload: {}
+  });
+};
 
 export const fetchLinks = (url) => (dispatch, getState, { api }) => {
   dispatch({

@@ -5,9 +5,9 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import config from '../config';
 import NotFoundModule from '../modules/NotFound/Loadable';
-import UserCreateModule from '../modules/User/pages/create/Loadable';
+// import UserCreateModule from '../modules/User/pages/create/Loadable';
 import UserListModule from '../modules/User/pages/list/Loadable';
-import DashboardModule from '../modules/Dashboard/pages/list/Loadable';
+// import DashboardModule from '../modules/Dashboard/pages/list/Loadable';
 import Header from '../components/molecules/Header';
 import Footer from '../components/molecules/Footer';
 import LocaleContext from '../locale/localeContext';
@@ -44,19 +44,19 @@ const Router = () => {
           <Switch>
             <Route
               exact
+              path={config.USER_LIST_PAGE}
+              render={(props) => <UserListModule {...props} />}
+            />
+          {/*<Route
+              exact
               path={config.USER_CREATE_PAGE}
               render={(props) => <UserCreateModule {...props} />}
             />
             <Route
               exact
-              path={config.USER_LIST_PAGE}
-              render={(props) => <UserListModule {...props} />}
-            />
-            <Route
-              exact
               path={config.DASHBOARD_LIST_PAGE}
               render={(props) => <DashboardModule {...props} />}
-            />
+            />*/}
             <Route path="" render={(props) => <NotFoundModule {...props} />} />
           </Switch>
         </div>

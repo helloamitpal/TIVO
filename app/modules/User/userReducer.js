@@ -1,23 +1,39 @@
 import { handle } from 'redux-pack';
 
-import * as actionTypes from './scrapperActionTypes';
+import * as actionTypes from './userActionTypes';
 import translate from '../../locale';
 
 const initialState = {
-  links: [],
-  savedLinks: [],
-  topLinks: [],
+  users: [],
   errors: '',
-  loading: false,
-  saveLinkSuccess: false,
-  removeLinkSuccess: false,
-  previewContent: ''
+  loading: false
 };
 
 const articleReducer = (state = initialState, action = '') => {
   const { type, payload } = action;
 
   switch (type) {
+    case actionTypes.GET_USERS:
+      return handle(state, action, {
+        start: (prevState) => ({
+          ...prevState,
+          errors: '',
+          loading: true
+        }),
+        success: (prevState) => ({
+          ...prevState,
+          users: payload ? [...payload.customerInfo] : []
+        }),
+        failure: (prevState) => ({
+          ...prevState,
+          errors: translate('common.failed')
+        }),
+        finish: (prevState) => ({
+          ...prevState,
+          loading: false
+        })
+      });
+
     case actionTypes.FETCH_LINKS:
       return handle(state, action, {
         start: (prevState) => ({

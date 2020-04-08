@@ -12,7 +12,7 @@ import Message from '../../../../components/atoms/Message';
 import Modal from '../../../../components/atoms/Modal';
 import SearchInput from '../../molecules/SearchInput';
 import translate from '../../../../locale';
-import Row from '../../templates/Row';
+import Row from '../../templates/UserRow';
 import config from '../../../../config';
 
 import '../../User.scss';

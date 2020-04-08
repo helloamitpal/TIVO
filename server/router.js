@@ -11,7 +11,7 @@ module.exports = (app, redisClient) => {
     let arr = JSON.parse(list);
 
     if (find) {
-      const [attr, searchStr] = find.split('=');
+      const [attr, searchStr] = find.split(':');
       arr = arr.filter((obj) => {
         let flag = false;
         if (obj.hasOwnProperty(attr)) {
