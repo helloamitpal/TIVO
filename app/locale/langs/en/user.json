@@ -1,4 +1,6 @@
 {
   "listTitle": "User List",
-  "noUserFound": "No user found"
+  "noUserFound": "No user found",
+  "addedPkgTitle": "Added Packages",
+  "addedAddonsPkgTitle": "Added Addons Packages"
 }

@@ -9,49 +9,46 @@ export const getUsers = (searchBy = '', searchStr = '') => (dispatch, getState, 
   });
 };
 
-export const fetchLinks = (url) => (dispatch, getState, { api }) => {
-  dispatch({
-    type: actionTypes.FETCH_LINKS,
-    promise: api.get(`/api/scrappers?url=${url}`),
-    payload: {}
-  });
-};
+export const getUserDetails = (userObj) => (dispatch, getState, { api }) => {
+  const { regionCode, package: packageNames, addOnService } = userObj;
 
-export const fetchSavedLinks = () => (dispatch, getState, { api }) => {
-  dispatch({
-    type: actionTypes.FETCH_SAVED_LINKS,
-    promise: api.get('/api/savedLinks'),
-    payload: {}
-  });
-};
+  const apis = [];
+  const addOnServiceList = addOnService.split(',');
+  const packageList = packageNames.split(',');
+  const regionList = regionCode.split(',');
 
-export const saveLink = (linkObj) => (dispatch, getState, { api }) => {
-  dispatch({
-    type: actionTypes.SAVE_LINK,
-    promise: api.post('/api/saveLink', linkObj),
-    payload: {}
+  addOnServiceList.forEach((val) => {
+    apis.push(api.get(`/api/addons?find=id:${val.trim()}`));
   });
-};
-
-export const fetchTopSavedLinks = (count) => (dispatch, getState, { api }) => {
-  dispatch({
-    type: actionTypes.FETCH_TOP_SAVED_LINKS,
-    payload: { count }
+  packageList.forEach((val) => {
+    apis.push(api.get(`/api/packages?find=packageId:${val.trim()}`));
   });
-};
-
-export const removeLink = (id) => (dispatch, getState, { api }) => {
-  dispatch({
-    type: actionTypes.REMOVE_LINK,
-    promise: api.delete(`/api/removeLink?id=${id}`),
-    payload: {}
+  regionList.forEach((val) => {
+    apis.push(api.get(`/api/regions?find=regionCode:${val.trim()}`));
   });
-};
 
-export const getLinkPreview = (url) => (dispatch, getState, { api }) => {
-  dispatch({
-    type: actionTypes.PREVIEW_LINK,
-    promise: api.get(`/api/preview?url=${url}`),
-    payload: {}
+  Promise.all(apis).then((values) => {
+    const obj = {};
+    values.forEach((currentVal, index) => {
+      let attr;
+
+      if (index >= 0 && index <= addOnServiceList.length - 1) {
+        attr = 'addOnServices';
+      } else if (index >= addOnServiceList.length && index <= (packageList.length + addOnServiceList.length - 1)) {
+        attr = 'packages';
+      } else {
+        attr = 'regions';
+      }
+
+      if (!obj[attr]) {
+        obj[attr] = [...currentVal];
+      } else {
+        obj[attr] = [...obj[attr], ...currentVal];
+      }
+    });
+    dispatch({
+      type: actionTypes.GET_USER_DETAILS,
+      payload: { user: { ...userObj }, ...obj }
+    });
   });
 };

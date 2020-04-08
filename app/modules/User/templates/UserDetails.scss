@@ -1,0 +1,55 @@
+@import './colors.scss';
+
+.user-details-container {
+  section {
+    margin: 10px 0;
+
+    &:not(:first-child) {
+      border-top: 2px solid $row-border;
+    }
+  }
+
+  .profile {
+    display: flex;
+    align-items: flex-start;
+
+    img {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  .package-container,
+  .addons-container {
+    h2 {
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+
+    h3 {
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+
+    .sub-container-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .sub-container {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      width: 100%;
+      flex-wrap: wrap;
+
+      li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+}

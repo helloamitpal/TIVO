@@ -5,8 +5,8 @@ import './message.scss';
 
 const Message = ({ title, description, type }) => (
   <div className={`message-container ${type}`}>
-    <h1 className="title">{title}</h1>
-    <div className="description">{description}</div>
+    {title ? <h1 className="title">{title}</h1> : null}
+    {description ? <div className="description">{description}</div> : null}
   </div>
 );
 

@@ -10,7 +10,7 @@ const UserRow = ({ personalInfo: { name, email, img }, index, style, className, 
       <div>{name}</div>
       <div>{email}</div>
     </div>
-    <button type="button" className="preview" onClick={onClick}>
+    <button type="button" className="preview" onClick={() => onClick(index)}>
       <span className="material-icons">pageview</span>
     </button>
   </div>

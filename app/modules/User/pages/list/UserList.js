@@ -12,16 +12,15 @@ import Modal from '../../../../components/atoms/Modal';
 import Message from '../../../../components/atoms/Message';
 import translate from '../../../../locale';
 import UserRow from '../../templates/UserRow';
-import UserDetails from '../../templates/userDetails';
+import UserDetails from '../../templates/UserDetails';
 
 import '../../User.scss';
 
 const UserListPage = ({
-  userState: { loading, users, errors },
+  userState: { loading, users, errors, userDetails },
   userActions
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(-1);
 
   // make api call at the begining to fetch all saved links
   useEffect(() => {
@@ -34,6 +33,13 @@ const UserListPage = ({
       toast.error(errors);
     }
   }, [errors]);
+
+  // opening modal once user details arrives
+  useEffect(() => {
+    if (userDetails) {
+      setModalOpen(true);
+    }
+  }, [userDetails]);
 
   const head = (
     <Helmet key="user-list-page">
@@ -48,16 +54,15 @@ const UserListPage = ({
   );
 
   const onOpenUserDetails = (index) => {
-    setSelectedUser(index);
-    setModalOpen(true);
+    userActions.getUserDetails(users[index]);
   };
 
   return (
     <div className="user-page-container">
       {head}
       {loading && <LoadingIndicator />}
-      {modalOpen && (
-        <Modal onClose={() => setModalOpen(false)}><UserDetails details={users[selectedUser]} /></Modal>
+      {modalOpen && userDetails && (
+        <Modal onClose={() => setModalOpen(false)}><UserDetails details={userDetails} /></Modal>
       )}
       <div className="list-container">
         {users.length
