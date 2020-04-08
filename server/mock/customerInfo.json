@@ -10,9 +10,7 @@
       },
       "package": "1,2,3",
       "addOnService": "1, 4"
-    }
-  ],
-  [
+    },
     {
       "regionCode": "2",
       "tsn": "A898765431",
@@ -23,9 +21,7 @@
       },
       "package": "1,3,4",
       "addOnService": "1, 2"
-    }
-  ],
-  [
+    },
     {
       "regionCode": "1",
       "tsn": "A898765432",
@@ -36,9 +32,7 @@
       },
       "package": "1,2,3",
       "addOnService": "1, 4"
-    }
-  ],
-  [
+    },
     {
       "regionCode": "2",
       "tsn": "A898765433",
@@ -49,9 +43,7 @@
       },
       "package": "1,3",
       "addOnService": "4"
-    }
-  ],
-  [
+    },
     {
       "regionCode": "3",
       "tsn": "A898765434",
@@ -62,9 +54,7 @@
       },
       "package": "3, 4",
       "addOnService": "2, 4"
-    }
-  ],
-  [
+    },
     {
       "regionCode": "4",
       "tsn": "A898765435",
@@ -75,9 +65,7 @@
       },
       "package": "1,2,3,4",
       "addOnService": "1,2,3,4"
-    }
-  ],
-  [
+    },
     {
       "regionCode": "5",
       "tsn": "A898765436",
@@ -88,9 +76,7 @@
       },
       "package": "",
       "addOnService": "1,2,3, 4"
-    }
-  ],
-  [
+    },
     {
       "regionCode": "6",
       "tsn": "A898765437",
@@ -101,9 +87,7 @@
       },
       "package": "1,2,3,4",
       "addOnService": ""
-    }
-  ],
-  [
+    },
     {
       "regionCode": "6",
       "tsn": "A898765438",
@@ -114,9 +98,7 @@
       },
       "package": "1,2",
       "addOnService": "1,2,3,4"
-    }
-  ],
-  [
+    },
     {
       "regionCode": "8",
       "tsn": "A898765439",

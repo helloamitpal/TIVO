@@ -21,9 +21,7 @@
           "img": "http://i.tivo.com/images-static/logos//65x55/1419.png"
         }
       ]
-    }
-  ],
-  [
+    },
     {
       "name": "Entertainment",
       "price": "40",
@@ -45,9 +43,7 @@
           "img": "http://i.tivo.com/images-static/logos//65x55/21.png"
         }
       ]
-    }
-  ],
-  [
+    },
     {
       "name": "Movies",
       "price": "60",
@@ -69,10 +65,7 @@
           "img": "http://i.tivo.com/images-static/logos//65x55/248.png"
         }
       ]
-    }
-  ],
-  ,
-  [
+    },
     {
       "name": "Music",
       "price": "40",
