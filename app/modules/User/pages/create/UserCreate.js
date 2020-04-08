@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import VirtualList from 'react-tiny-virtual-list';
 import { toast } from 'react-toastify';
 
-import * as scrapperActionCreator from '../../scrapperActionCreator';
+import * as userActionCreator from '../../userActionCreator';
 import LoadingIndicator from '../../../../components/atoms/LoadingIndicator';
 import Message from '../../../../components/atoms/Message';
 import Modal from '../../../../components/atoms/Modal';
@@ -15,9 +15,9 @@ import translate from '../../../../locale';
 import Row from '../../templates/Row';
 import config from '../../../../config';
 
-import '../../Scrapper.scss';
+import '../../User.scss';
 
-const ScrapperHomePage = ({
+const UserCreatePage = ({
   scrapperState: { links, errors, loading, topLinks, savedLinks, saveLinkSuccess, previewContent },
   scrapperActions,
   history
@@ -152,23 +152,23 @@ const ScrapperHomePage = ({
 };
 
 const mapStateToProps = (state) => ({
-  scrapperState: state.scrapper
+  userState: state.user
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  scrapperActions: bindActionCreators(scrapperActionCreator, dispatch)
+  userActions: bindActionCreators(userActionCreator, dispatch)
 });
 
-ScrapperHomePage.propTypes = {
-  scrapperState: PropTypes.object,
-  scrapperActions: PropTypes.object,
+UserCreatePage.propTypes = {
+  userState: PropTypes.object,
+  userActions: PropTypes.object,
   history: PropTypes.object
 };
 
-ScrapperHomePage.defaultProps = {
-  scrapperState: {},
-  scrapperActions: {},
+UserCreatePage.defaultProps = {
+  userState: {},
+  userActions: {},
   history: {}
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScrapperHomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(UserCreatePage);

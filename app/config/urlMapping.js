@@ -1,4 +1,5 @@
 export default {
-  SCRAPPER_PAGE: '/',
-  SCRAPPER_SAVED_LINKS_PAGE: '/saved-links'
+  USER_CREATE_PAGE: '/user/create',
+  SCRAPPER_SAVED_LINKS_PAGE: '/user/list',
+  DASHBOARD_LIST_PAGE: '/dashboard'
 };

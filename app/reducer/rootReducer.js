@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 
-import scrapperReducer from '../modules/Scrapper/scrapperReducer';
+import userReducer from '../modules/User/userReducer';
+import dashboardReducer from '../modules/Dashboard/dashboardReducer';
 
 // this is the root reducer to combine module wise reducers
 const rootReducer = combineReducers({
-  scrapper: scrapperReducer
+  user: userReducer,
+  dashboard: dashboardReducer
 });
 
 export default rootReducer;

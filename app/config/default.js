@@ -1,6 +1,5 @@
 export default {
-  STORAGE_KEY: 'ScrapperAppStoreKey',
+  STORAGE_KEY: 'TIVOAppStoreKey',
   API_TIMEOUT: 4000,
-  FALLBACK_LANGUAGE: 'en',
-  MAX_LINK_SHOW_COUNT: 5
+  FALLBACK_LANGUAGE: 'en'
 };
