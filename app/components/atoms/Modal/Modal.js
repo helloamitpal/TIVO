@@ -3,19 +3,19 @@ import PropTypes from 'prop-types';
 
 import './Modal.scss';
 
-const Modal = ({ onClose, child }) => (
+const Modal = ({ onClose, children }) => (
   <div className="overlay modal-container">
     <div className="modal-content">
       <button type="button" className="close-btn" onClick={onClose}>
         <span className="material-icons">close</span>
       </button>
-      <div className="modal-body">{child}</div>
+      <div className="modal-body">{children}</div>
     </div>
   </div>
 );
 
 Modal.propTypes = {
-  child: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
   onClose: PropTypes.func.isRequired
 };
 

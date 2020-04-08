@@ -5,6 +5,7 @@ import translate from '../../locale';
 
 const initialState = {
   users: [],
+  userDetails: null,
   errors: '',
   loading: false
 };

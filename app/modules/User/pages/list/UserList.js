@@ -34,13 +34,6 @@ const UserListPage = ({
     }
   }, [errors]);
 
-  // opening modal once user details arrives
-  useEffect(() => {
-    if (userDetails) {
-      setModalOpen(true);
-    }
-  }, [userDetails]);
-
   const head = (
     <Helmet key="user-list-page">
       <title>{translate('user.listTitle')}</title>
@@ -54,6 +47,7 @@ const UserListPage = ({
   );
 
   const onOpenUserDetails = (index) => {
+    setModalOpen(true);
     userActions.getUserDetails(users[index]);
   };
 

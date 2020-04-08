@@ -31,12 +31,6 @@
       font-weight: bold;
     }
 
-    .sub-container-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
     .sub-container {
       list-style-type: none;
       padding: 0;
@@ -49,6 +43,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin: 0 10px;
+        box-shadow: 0 0 4px 0px rgba(0,0,0,0.4);
+        padding: 10px;
       }
     }
   }

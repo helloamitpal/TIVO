@@ -9,7 +9,7 @@ const {
 module.exports = (app, redisClient) => {
   const getFilteredData = (list, find) => {
     let arr = [...list];
-    console.log("AMIT::", arr);
+
     if (find) {
       const [attr, searchStr] = find.split(':');
       arr = arr.filter((obj) => {
@@ -17,7 +17,6 @@ module.exports = (app, redisClient) => {
         if (obj.hasOwnProperty(attr)) {
           if (!attr.includes('.')) {
             flag = (typeof obj[attr] === 'string') ? obj[attr].toLowerCase().includes(searchStr.toLowerCase()) : (obj[attr] === Number(searchStr));
-            console.log(obj[attr],"::",searchStr,"::", flag);
           } else {
             const [attr1, attr2] = attr.split('.');
 

@@ -7,9 +7,10 @@ import translate from '../../../locale';
 import './UserDetails.scss';
 
 const UserDetails = ({ details: { regions, tsn, personalInfo: { name, email, img }, packages, addOnServices } }) => {
-  const regionList = regions.reduce(({ region, area, Country }, acc, index) => {
-    return `${region}, ${area}, ${Country}${index < regions.length - 1 ? '</br>' : ''}`;
-  }, '');
+  const regionList = regions.map(({ region, area, Country }, acc, index) => (
+    `${region}, ${area}, ${Country}${index < regions.length - 1 ? '</br>' : ''}`
+  ));
+
   return (
     <div className="user-details-container">
       <section className="profile">
@@ -42,15 +43,17 @@ const UserDetails = ({ details: { regions, tsn, personalInfo: { name, email, img
       </section>
       <section className="addons-container">
         <h2>{translate('user.addedAddonsPkgTitle')}</h2>
-        {
-          addOnServices.map(({ name: addonsName, id: addonsId, price, img: addonsImg }) => (
-            <div key={`pkg-${addonsId}`} className="sub-container-block">
-              <img src={addonsImg} alt="addons_img" />
-              <div>{addonsName}</div>
-              <div>{`${price}Rs`}</div>
-            </div>
-          ))
-        }
+        <ul className="sub-container">
+          {
+            addOnServices.map(({ name: addonsName, id: addonsId, price, image: addonsImg }) => (
+              <li key={`pkg-${addonsId}`}>
+                <img src={addonsImg} alt="addons_img" />
+                <div>{addonsName}</div>
+                <div>{`${price}Rs`}</div>
+              </li>
+            ))
+          }
+        </ul>
       </section>
     </div>
   );
