@@ -11,6 +11,7 @@ const argv = require('./util/argv');
 const port = require('./util/port');
 const setupMiddleware = require('./middlewares/frontendMiddleware');
 const setupRouter = require('./router');
+const setupRedis = require('./redis');
 
 const app = express();
 
@@ -43,7 +44,8 @@ const customHost = argv.host || process.env.HOST;
 const host = customHost || null; // Let http.Server use its default IPv6/4 host
 const prettyHost = customHost || 'localhost';
 
-setupRouter(app);
+const redisClient = setupRedis(app);
+setupRouter(app, redisClient);
 
 // In production we need to pass these values in instead of relying on webpack
 setupMiddleware(app, {

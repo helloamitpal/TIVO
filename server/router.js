@@ -1,133 +1,96 @@
-/* eslint-disable no-bitwise, no-mixed-operators */
-const request = require('request');
-const cheerio = require('cheerio');
-const redis = require('redis');
-const uuid = require('uuid');
+const logger = require('./util/logger');
+const {
+  REDIS_TIVO_ADDONS_SERVICES,
+  REDIS_TIVO_CUSTOMER_INFO,
+  REDIS_TIVO_PACKAGES,
+  REDIS_TIVO_REGIONS
+} = require('./constants');
 
-const logger = require('./util//logger');
+module.exports = (app, redisClient) => {
+  const getFilteredDaa = (list, find) => {
+    let arr = JSON.parse(list);
 
-const REDIS_ROOT_NAME = 'SCRAPPE_RROOT';
-const redisClient = redis.createClient(); // creates a new redis client
+    if (find) {
+      const [attr, searchStr] = find.split('=');
+      arr = arr.filter((obj) => {
+        let flag = false;
+        if (obj.hasOwnProperty(attr)) {
+          if (!attr.includes('.') && typeof obj[attr] === 'string') {
+            flag = obj[attr].toLowerCase().includes(searchStr.toLowerCase());
+          } else {
+            const [attr1, attr2] = attr.split('.');
 
-module.exports = (app) => {
-  redisClient.on('connect', () => {
-    logger.info('Redis connected');
-  });
-
-  // api to get all saved links in the store
-  app.get('/api/savedLinks', (req, res) => {
-    redisClient.get(REDIS_ROOT_NAME, (err, arr) => {
-      if (err) {
-        throw new Error('Something went wrong');
-      }
-
-      logger.info(`Data is found in Redis store: ${arr ? arr.length : 0}`);
-      res.send(JSON.parse(arr) || []);
-    });
-  });
-
-  // api to save link in the store
-  app.post('/api/saveLink', (req, res) => {
-    const { body } = req;
-
-    if (!body) {
-      throw new Error('Invalid body');
-    }
-
-    redisClient.get(REDIS_ROOT_NAME, (err, redisStr) => {
-      if (err) {
-        throw new Error('Something went wrong');
-      }
-
-      const redisObj = JSON.parse(redisStr);
-      let arr = {};
-      if (!redisObj) {
-        arr = [{ ...body }];
-      } else {
-        arr = [...redisObj, body];
-      }
-
-      redisClient.set(REDIS_ROOT_NAME, JSON.stringify(arr), (seterr) => {
-        if (seterr) {
-          throw new Error('Something went wrong');
+            if (obj[attr1] instanceof Object && obj[attr1].length === undefined) {
+              flag = obj[attr1][attr2].toLowerCase().includes(searchStr.toLowerCase);
+            } else {
+              flag = obj[attr].filter((arrObj) => (arrObj.hasOwnProperty(attr2) && [attr2].toLowerCase().includes(searchStr.toLowerCase)));
+            }
+          }
         }
-
-        logger.info('Data is saved in Redis store');
-        res.send(arr);
+        return flag;
       });
-    });
-  });
-
-  // api to remove link from saved store
-  app.delete('/api/removeLink', (req, res) => {
-    const { id: queryParamId } = req.query;
-
-    if (!queryParamId) {
-      throw new Error('Invalid param');
     }
 
-    redisClient.get(REDIS_ROOT_NAME, (err, redisStr) => {
+    return arr;
+  };
+
+  // api to get addons services in the store
+  app.get('/api/addons', (req, res) => {
+    redisClient.get(REDIS_TIVO_ADDONS_SERVICES, (err, arr) => {
       if (err) {
-        throw new Error('Something went wrong');
+        throw new Error('Something went wrong in fetching addons services');
       }
 
-      const links = JSON.parse(redisStr);
-      const updatedArr = links.filter(({ id }) => (id !== queryParamId));
+      const { find } = req.query;
+      const data = getFilteredDaa(arr, find);
 
-      redisClient.set(REDIS_ROOT_NAME, JSON.stringify(updatedArr), (seterr) => {
-        if (seterr) {
-          throw new Error('Something went wrong');
-        }
-
-        logger.info('Data is removed from Redis store');
-        res.send(updatedArr);
-      });
+      logger.info(`addons data is found in Redis store: ${data.length}`);
+      res.send(data);
     });
   });
 
-  app.get('/api/preview', (req, res) => {
-    const { url } = req.query;
-
-    if (!url) {
-      throw new Error('Invalid param');
-    }
-
-    request(url, (error, response, html) => {
-      if (error) {
-        throw new Error('Problem in fetching the URL');
+  // api to get customer info in the store
+  app.get('/api/customerInfo', (req, res) => {
+    redisClient.get(REDIS_TIVO_CUSTOMER_INFO, (err, arr) => {
+      if (err) {
+        throw new Error('Something went wrong in fetching customer info');
       }
 
-      res.send(html);
+      const { find } = req.query;
+      const data = getFilteredDaa(arr, find);
+
+      logger.info(`customer info is found in Redis store: ${data.length}`);
+      res.send(data);
     });
   });
 
-  // api to get all links form a given url
-  app.get('/api/scrappers', (req, res) => {
-    const { url } = req.query;
-
-    if (!url) {
-      throw new Error('Invalid param');
-    }
-
-    request(url, (error, response, html) => {
-      if (error) {
-        throw new Error('Problem in fetching the URL');
+  // api to get normal packages in the store
+  app.get('/api/packages', (req, res) => {
+    redisClient.get(REDIS_TIVO_PACKAGES, (err, arr) => {
+      if (err) {
+        throw new Error('Something went wrong in fetching packages');
       }
 
-      const links = [];
-      const $ = cheerio.load(html);
-      $('a').each(function callback() {
-        const $link = $(this);
-        const id = uuid.v4();
+      const { find } = req.query;
+      const data = getFilteredDaa(arr, find);
 
-        links.push({
-          text: $link.text(),
-          href: $link.attr('href'),
-          id
-        });
-      });
+      logger.info(`package data is found in Redis store: ${data.length}`);
+      res.send(data);
+    });
+  });
 
-      res.send(links);
+  // api to get regions in the store
+  app.get('/api/regions', (req, res) => {
+    redisClient.get(REDIS_TIVO_REGIONS, (err, arr) => {
+      if (err) {
+        throw new Error('Something went wrong in fetching regions');
+      }
+
+      const { find } = req.query;
+      const data = getFilteredDaa(arr, find);
+
+      logger.info(`region data is found in Redis store: ${data.length}`);
+      res.send(data);
     });
   });
 
