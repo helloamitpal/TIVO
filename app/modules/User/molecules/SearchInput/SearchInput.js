@@ -6,23 +6,19 @@ import translate from '../../../../locale';
 
 import './SearchInput.scss';
 
-const SearchInput = ({ onSearch, className, ...restProps }) => {
-  const URL_REGEX = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&=]*)/;
+const SearchInput = ({ onSearch, className, placeholder, ...restProps }) => {
   const [text, setText] = useState();
 
   const onChangeSearch = (val) => {
     setText(val);
   };
 
-  const validateInput = (val) => (!val || (val && val.match(URL_REGEX)));
-
   return (
     <div className={`search-input-container ${className}`}>
       <Input
         {...restProps}
-        validate={validateInput}
         onChange={onChangeSearch}
-        placeholder={translate('common.URL')}
+        placeholder={placeholder}
       />
       <button type="button" onClick={() => onSearch(text)}>
         <span className="material-icons">search</span>
@@ -32,12 +28,14 @@ const SearchInput = ({ onSearch, className, ...restProps }) => {
 };
 
 SearchInput.defaultProps = {
-  className: ''
+  className: '',
+  placeholder: translate('user.searchByNamePlaceholder')
 };
 
 SearchInput.propTypes = {
   onSearch: PropTypes.func.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
+  placeholder: PropTypes.string
 };
 
 export default SearchInput;

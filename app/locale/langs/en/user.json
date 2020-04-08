@@ -2,5 +2,6 @@
   "listTitle": "User List",
   "noUserFound": "No user found",
   "addedPkgTitle": "Added Packages",
-  "addedAddonsPkgTitle": "Added Addons Packages"
+  "addedAddonsPkgTitle": "Added Addons Packages",
+  "searchByNamePlaceholder": "Search by name"
 }

@@ -13,6 +13,7 @@ import Message from '../../../../components/atoms/Message';
 import translate from '../../../../locale';
 import UserRow from '../../templates/UserRow';
 import UserDetails from '../../templates/UserDetails';
+import SearchInput from '../../molecules/SearchInput';
 
 import '../../User.scss';
 
@@ -51,16 +52,24 @@ const UserListPage = ({
     userActions.getUserDetails(users[index]);
   };
 
+  const onSearchUser = (text) => {
+    userActions.getUsers('name', text);
+  };
+
   return (
     <div className="user-page-container">
       {head}
       {loading && <LoadingIndicator />}
       {modalOpen && userDetails && (
-        <Modal onClose={() => setModalOpen(false)}><UserDetails details={userDetails} /></Modal>
+        <Modal onClose={() => setModalOpen(false)}>
+          <UserDetails details={userDetails} />
+        </Modal>
       )}
-      <div className="list-container">
-        {users.length
-          ? (
+      <SearchInput onSearch={onSearchUser} />
+      {users.length === 0
+        ? <Message description={translate('user.noUserFound')} />
+        : (
+          <div className="list-container">
             <VirtualList
               height={400}
               width="100%"
@@ -83,10 +92,9 @@ const UserListPage = ({
                 );
               }}
             />
-          )
-          : <Message description={translate('user.noUserFound')} />
-        }
-      </div>
+          </div>
+        )
+      }
     </div>
   );
 };

@@ -14,19 +14,22 @@ module.exports = (app, redisClient) => {
       const [attr, searchStr] = find.split(':');
       arr = arr.filter((obj) => {
         let flag = false;
-        if (obj.hasOwnProperty(attr)) {
-          if (!attr.includes('.')) {
-            flag = (typeof obj[attr] === 'string') ? obj[attr].toLowerCase().includes(searchStr.toLowerCase()) : (obj[attr] === Number(searchStr));
-          } else {
-            const [attr1, attr2] = attr.split('.');
 
-            if (obj[attr1] instanceof Object && obj[attr1].length === undefined) {
-              flag = obj[attr1][attr2].toLowerCase().includes(searchStr.toLowerCase);
-            } else {
-              flag = obj[attr].filter((arrObj) => (arrObj.hasOwnProperty(attr2) && [attr2].toLowerCase().includes(searchStr.toLowerCase)));
-            }
+        if (obj.hasOwnProperty(attr)) {
+          flag = `${obj[attr]}`.toLowerCase().includes(searchStr.toLowerCase());
+        } else {
+          const [attr1, attr2] = attr.split('.');
+          const val = attr1 && obj[attr1];
+
+          if (val instanceof Object && val.length === undefined) {
+            flag = `${val[attr2]}`.toLowerCase().includes(searchStr.toLowerCase());
+          } else if (val instanceof Array) {
+            flag = val.filter((arrObj) => (arrObj.hasOwnProperty(attr2) && `${arrObj[attr2]}`.toLowerCase().includes(searchStr.toLowerCase())));
+          } else {
+            throw new Error('Invalid param found');
           }
         }
+
         return flag;
       });
     }
