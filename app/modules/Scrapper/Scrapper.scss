@@ -1,0 +1,73 @@
+@import './colors.scss';
+
+.scrapper-page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .sub-title {
+    font-style: italic;
+    font-size: 1em;
+    margin-top: 10px;
+  }
+
+  .saved-links-title {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    align-items: center;
+    border-top: 1px solid $divider-border-color;
+    padding-top: 20px;
+
+    h2 {
+      font-size: 1.3em;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    button {
+      height: 28px;
+      border-radius: 4px;
+      border: 1px solid $showall-btn-border-color;
+      cursor: pointer;
+    }
+  }
+
+  .virtual-row {
+    display: flex;
+    position: relative;
+    height: 60px;
+
+    .row-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+    }
+
+    button {
+      background: transparent;
+      border: 0 none;
+      cursor: pointer;
+
+      &:hover .material-icons {
+        color: $bookmark-btn-hover-color;
+      }
+    }
+
+    &.selected {
+      background-color: $selected-background;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $row-border;
+    }
+
+    & > div {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 0 20px;
+    }
+  }
+}
