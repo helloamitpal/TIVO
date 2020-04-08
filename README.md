@@ -80,6 +80,7 @@ $ npm run start
 ```
 
 Default port number is 7009
+Localhost URL: http://localhost:7009/user
 
 **NOTE**: To change the port, create a .env in root folder and add your port number as follows.
 
