@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -8,16 +9,47 @@ import { toast } from 'react-toastify';
 import * as userActionCreator from '../../userActionCreator';
 import LoadingIndicator from '../../../../components/atoms/LoadingIndicator';
 import translate from '../../../../locale';
+import Input from '../../../../components/atoms/Input';
 
-import '../../User.scss';
+import './UserCreate.scss';
 
 const UserCreatePage = ({
-  userState: { errors, loading, createSuccess },
+  userState: { errors, loading, createSuccess, regionList, packageList, addonList },
   userActions,
   history
 }) => {
+  const defaultForm = {
+    name: '',
+    email: '',
+    region: '',
+    packages: '',
+    addons: ''
+  };
+  const [formData, setFormData] = useState({ ...defaultForm });
+
+  // calling api to get list of packages, regions and addons
+  useEffect(() => {
+    userActions.getRegions();
+    userActions.getPackages();
+    userActions.getAddons();
+  }, [userActions]);
+
+  // show toast message if any errror occurrs
+  useEffect(() => {
+    if (errors) {
+      toast.error(errors);
+    }
+  }, [errors]);
+
+  // show success toast message if create user gets success
+  useEffect(() => {
+    if (createSuccess) {
+      toast.success(createSuccess);
+    }
+  }, [createSuccess]);
+
   const head = (
-    <Helmet key="scrapper-page">
+    <Helmet key="user-create-page">
       <title>{translate('user.createUser')}</title>
       <meta property="og:title" content="User create" />
       <meta
@@ -28,10 +60,84 @@ const UserCreatePage = ({
     </Helmet>
   );
 
+  const onChangeFormData = (attr, val) => {
+    const form = { ...formData };
+
+    form[attr] = val;
+    setFormData(form);
+  };
+
+  const resetForm = () => {
+    const form = { ...defaultForm };
+    setFormData(form);
+  };
+
+  const getChannels = () => {
+    const filterdData = packageList.find(({ packageId }) => (formData.packages === packageId));
+    const { channel, price } = filterdData;
+    const channelNames = channel.map(({ name }) => (name)).join(', ');
+
+    return translate('user.channels', { CHANNELS: channelNames, PRICE: price });
+  };
+
+  const isValidForm = () => (Object.values(formData).some((val) => (val.trim())));
+
+  const createUser = () => {
+    userActions.createUser(formData);
+  };
+
   return (
-    <div className="scrapper-page-container row">
+    <div className="user-create-page-container">
       {head}
       {loading && <LoadingIndicator />}
+      <form className="create-form-container">
+        <section>
+          <span>{translate('user.customerName')}</span>
+          <Input value={formData.name} onChange={(val) => onChangeFormData('name', val)} />
+        </section>
+        <section>
+          <span>{translate('user.email')}</span>
+          <Input type="email" value={formData.email} onChange={(val) => onChangeFormData('email', val)} />
+        </section>
+        <section>
+          <span>{translate('user.region')}</span>
+          <select value={formData.region} onChange={({ target: { value } }) => onChangeFormData('region', value)}>
+            <option value="">{translate('user.select')}</option>
+            {
+              regionList.map(({ regionCode, region }) => (
+                <option key={`region-${regionCode}`} value={regionCode}>{region}</option>
+              ))
+            }
+          </select>
+        </section>
+        <section>
+          <span>{translate('user.package')}</span>
+          <select value={formData.packages} onChange={({ target: { value } }) => onChangeFormData('packages', value)}>
+            <option value="">{translate('user.select')}</option>
+            {
+              packageList.map(({ packageId, name }) => (
+                <option key={`pkg-${packageId}`} value={packageId}>{name}</option>
+              ))
+            }
+          </select>
+          <p>{(packageList.length && formData.packages) ? getChannels() : null}</p>
+        </section>
+        <section>
+          <span>{translate('user.addons')}</span>
+          <select value={formData.addons} onChange={({ target: { value } }) => onChangeFormData('addons', value)}>
+            <option value="">{translate('user.select')}</option>
+            {
+              addonList.map(({ id, name }) => (
+                <option key={`addon-${id}`} value={id}>{name}</option>
+              ))
+            }
+          </select>
+        </section>
+        <section className="button-section">
+          <button type="button" onClick={resetForm}>{translate('common.reset')}</button>
+          <button type="button" disabled={!isValidForm()} className="red" onClick={createUser}>{translate('user.create')}</button>
+        </section>
+      </form>
     </div>
   );
 };

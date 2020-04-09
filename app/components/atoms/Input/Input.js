@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import './Input.scss';
 
-const Input = ({ onChange, validate, placeholder }) => {
+const Input = ({ onChange, validate, placeholder, value, type }) => {
   const [error, setError] = useState(false);
 
-  const onChangeText = ({ target: { value } }) => {
-    const trimmedVal = value.trim();
+  const onChangeText = ({ target: { value: inputVal } }) => {
+    const trimmedVal = inputVal.trim();
 
     if (validate) {
       const valid = validate.call(null, trimmedVal);
@@ -18,20 +18,24 @@ const Input = ({ onChange, validate, placeholder }) => {
 
   return (
     <div className={`input-container ${error ? 'error' : ''}`}>
-      <input type="text" onChange={onChangeText} placeholder={placeholder} />
+      <input type={type} value={value} onChange={onChangeText} placeholder={placeholder} />
     </div>
   );
 };
 
 Input.defaultProps = {
   validate: null,
-  placeholder: ''
+  placeholder: '',
+  value: '',
+  type: 'text'
 };
 
 Input.propTypes = {
   onChange: PropTypes.func.isRequired,
   validate: PropTypes.func,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  value: PropTypes.string,
+  type: PropTypes.string
 };
 
 export default Input;

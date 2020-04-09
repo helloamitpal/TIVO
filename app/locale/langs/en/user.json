@@ -4,5 +4,13 @@
   "addedPkgTitle": "Added Packages",
   "addedAddonsPkgTitle": "Added Addons Packages",
   "searchByNamePlaceholder": "Search by name",
-  "createUser": "Create User"
+  "createUser": "Create User",
+  "customerName": "Customer Name",
+  "email": "Email",
+  "package": "Package",
+  "region": "Region",
+  "addons": "Addons",
+  "create": "Create",
+  "channels": "Channels: ${CHANNELS} | Price: ${PRICE}Rs",
+  "select": "Please select"
 }

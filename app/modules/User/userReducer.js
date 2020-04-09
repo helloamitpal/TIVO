@@ -8,7 +8,11 @@ const initialState = {
   users: [],
   userDetails: null,
   errors: '',
-  loading: false
+  loading: false,
+  regionList: [],
+  packageList: [],
+  addonList: [],
+  createSuccess: false
 };
 
 const userReducer = (state = initialState, action = '') => {
@@ -25,6 +29,69 @@ const userReducer = (state = initialState, action = '') => {
         success: (prevState) => ({
           ...prevState,
           users: payload ? [...payload] : []
+        }),
+        failure: (prevState) => ({
+          ...prevState,
+          errors: translate('common.failed')
+        }),
+        finish: (prevState) => ({
+          ...prevState,
+          loading: false
+        })
+      });
+
+    case actionTypes.GET_REGIONS:
+      return handle(state, action, {
+        start: (prevState) => ({
+          ...prevState,
+          errors: '',
+          loading: true
+        }),
+        success: (prevState) => ({
+          ...prevState,
+          regionList: payload ? [...payload] : []
+        }),
+        failure: (prevState) => ({
+          ...prevState,
+          errors: translate('common.failed')
+        }),
+        finish: (prevState) => ({
+          ...prevState,
+          loading: false
+        })
+      });
+
+    case actionTypes.GET_PACKAGES:
+      return handle(state, action, {
+        start: (prevState) => ({
+          ...prevState,
+          errors: '',
+          loading: true
+        }),
+        success: (prevState) => ({
+          ...prevState,
+          packageList: payload ? [...payload] : []
+        }),
+        failure: (prevState) => ({
+          ...prevState,
+          errors: translate('common.failed')
+        }),
+        finish: (prevState) => ({
+          ...prevState,
+          loading: false
+        })
+      });
+
+    case actionTypes.GET_ADDONS:
+      return handle(state, action, {
+        start: (prevState) => ({
+          ...prevState,
+          errors: '',
+          loading: true
+        }),
+        success: (prevState) => ({
+          ...prevState,
+          addonList: payload ? [...payload] : []
         }),
         failure: (prevState) => ({
           ...prevState,
@@ -67,27 +134,6 @@ const userReducer = (state = initialState, action = '') => {
         })
       });
     }
-
-    // case actionTypes.GET_USER_DETAILS: {
-    //   const newState = { ...state };
-    //   const { error, user: { personalInfo, tsn }, addOnServices, packages, regions } = payload;
-    //
-    //   if (error) {
-    //     newState.error = translate('common.failed');
-    //     return newState;
-    //   }
-    //
-    //   newState.userDetails = {
-    //     tsn,
-    //     personalInfo,
-    //     addOnServices,
-    //     packages,
-    //     regions,
-    //     error: ''
-    //   };
-    //
-    //   return newState;
-    // }
 
     default:
       return state;

@@ -9,6 +9,30 @@ export const getUsers = (searchBy = '', searchStr = '') => (dispatch, getState, 
   });
 };
 
+export const getRegions = () => (dispatch, getState, { api }) => {
+  dispatch({
+    type: actionTypes.GET_REGIONS,
+    promise: api.get('/api/regions'),
+    payload: {}
+  });
+};
+
+export const getPackages = () => (dispatch, getState, { api }) => {
+  dispatch({
+    type: actionTypes.GET_PACKAGES,
+    promise: api.get('/api/packages'),
+    payload: {}
+  });
+};
+
+export const getAddons = () => (dispatch, getState, { api }) => {
+  dispatch({
+    type: actionTypes.GET_ADDONS,
+    promise: api.get('/api/addons'),
+    payload: {}
+  });
+};
+
 export const getUserDetails = (userObj) => (dispatch, getState, { api }) => {
   const { regionCode, package: packageNames, addOnService } = userObj;
 
@@ -36,34 +60,4 @@ export const getUserDetails = (userObj) => (dispatch, getState, { api }) => {
     },
     promise: Promise.all(apis)
   });
-
-  // Promise.all(apis).then((values) => {
-  //   const obj = {};
-  //   values.forEach((currentVal, index) => {
-  //     let attr;
-  //
-  //     if (index >= 0 && index <= addOnServiceList.length - 1) {
-  //       attr = 'addOnServices';
-  //     } else if (index >= addOnServiceList.length && index <= (packageList.length + addOnServiceList.length - 1)) {
-  //       attr = 'packages';
-  //     } else {
-  //       attr = 'regions';
-  //     }
-  //
-  //     if (!obj[attr]) {
-  //       obj[attr] = [...currentVal];
-  //     } else {
-  //       obj[attr] = [...obj[attr], ...currentVal];
-  //     }
-  //   });
-  //   dispatch({
-  //     type: actionTypes.GET_USER_DETAILS,
-  //     payload: { user: { ...userObj }, ...obj }
-  //   });
-  // }).catch(() => {
-  //   dispatch({
-  //     type: actionTypes.GET_USER_DETAILS,
-  //     payload: { error: 'failed to fetch dashboard records' }
-  //   });
-  // });
 };

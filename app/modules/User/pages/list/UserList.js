@@ -15,7 +15,7 @@ import UserRow from '../../templates/UserRow';
 import UserDetails from '../../templates/UserDetails';
 import SearchInput from '../../molecules/SearchInput';
 
-import '../../User.scss';
+import './UserList.scss';
 
 const UserListPage = ({
   userState: { loading, users, errors, userDetails },
