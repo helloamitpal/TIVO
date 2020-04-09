@@ -27,28 +27,43 @@ export const getUserDetails = (userObj) => (dispatch, getState, { api }) => {
     apis.push(api.get(`/api/regions?find=regionCode:${val.trim()}`));
   });
 
-  Promise.all(apis).then((values) => {
-    const obj = {};
-    values.forEach((currentVal, index) => {
-      let attr;
-
-      if (index >= 0 && index <= addOnServiceList.length - 1) {
-        attr = 'addOnServices';
-      } else if (index >= addOnServiceList.length && index <= (packageList.length + addOnServiceList.length - 1)) {
-        attr = 'packages';
-      } else {
-        attr = 'regions';
-      }
-
-      if (!obj[attr]) {
-        obj[attr] = [...currentVal];
-      } else {
-        obj[attr] = [...obj[attr], ...currentVal];
-      }
-    });
-    dispatch({
-      type: actionTypes.GET_USER_DETAILS,
-      payload: { user: { ...userObj }, ...obj }
-    });
+  dispatch({
+    type: actionTypes.GET_USER_DETAILS,
+    payload: {
+      user: { ...userObj },
+      addOnServiceListLength: addOnServiceList.length,
+      packageListLength: packageList.length
+    },
+    promise: Promise.all(apis)
   });
+
+  // Promise.all(apis).then((values) => {
+  //   const obj = {};
+  //   values.forEach((currentVal, index) => {
+  //     let attr;
+  //
+  //     if (index >= 0 && index <= addOnServiceList.length - 1) {
+  //       attr = 'addOnServices';
+  //     } else if (index >= addOnServiceList.length && index <= (packageList.length + addOnServiceList.length - 1)) {
+  //       attr = 'packages';
+  //     } else {
+  //       attr = 'regions';
+  //     }
+  //
+  //     if (!obj[attr]) {
+  //       obj[attr] = [...currentVal];
+  //     } else {
+  //       obj[attr] = [...obj[attr], ...currentVal];
+  //     }
+  //   });
+  //   dispatch({
+  //     type: actionTypes.GET_USER_DETAILS,
+  //     payload: { user: { ...userObj }, ...obj }
+  //   });
+  // }).catch(() => {
+  //   dispatch({
+  //     type: actionTypes.GET_USER_DETAILS,
+  //     payload: { error: 'failed to fetch dashboard records' }
+  //   });
+  // });
 };

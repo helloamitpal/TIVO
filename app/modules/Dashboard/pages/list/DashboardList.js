@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+import ZingChart from 'zingchart-react';
 
 import * as dashboardActionCreator from '../../dashboardActionCreator';
 import LoadingIndicator from '../../../../components/atoms/LoadingIndicator';
@@ -12,13 +13,13 @@ import translate from '../../../../locale';
 import '../../Dashboard.scss';
 
 const DashboardListPage = ({
-  dashboardState: { loading, errors },
+  dashboardState: { loading, errors, dashboardDetails },
   dashboardActions
 }) => {
   // make api call at the begining to fetch all saved links
-  // useEffect(() => {
-  //   dashboardActions.getUsers();
-  // }, [dashboardActions]);
+  useEffect(() => {
+    dashboardActions.getDashboardData();
+  }, [dashboardActions]);
 
   // show toast message if any errror occurrs
   useEffect(() => {
@@ -26,6 +27,16 @@ const DashboardListPage = ({
       toast.error(errors);
     }
   }, [errors]);
+
+  const getChartConfig = (series, chartType, title) => ({
+    type: chartType,
+    width: '100%',
+    height: '100%',
+    ...series,
+    title: {
+      text: title
+    }
+  });
 
   const head = (
     <Helmet key="user-list-page">
@@ -43,7 +54,14 @@ const DashboardListPage = ({
     <div className="dashboard-page-container">
       {head}
       {loading && <LoadingIndicator />}
-      <h1>Dashboard</h1>
+      <h1>{translate('dashboard.title')}</h1>
+      {dashboardDetails ? (
+        <div className="chart-container">
+          <ZingChart data={getChartConfig(dashboardDetails.usersPerRegion, 'hbar', 'Users per region')} />
+          <ZingChart data={getChartConfig(dashboardDetails.usersPerPackage, 'hbar', 'Users per subscribed package')} />
+          <ZingChart data={getChartConfig(dashboardDetails.usersPerAddons, 'bar', 'Users per subscribed addons')} />
+        </div>
+      ) : null}
     </div>
   );
 };

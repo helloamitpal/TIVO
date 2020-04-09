@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useState } from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter, Redirect } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 
 import config from '../config';
@@ -58,6 +58,7 @@ const Router = () => {
               render={(props) => <UserCreateModule {...props} />}
             />
             */}
+            <Redirect path="/" to={config.USER_LIST_PAGE} />
             <Route path="" render={(props) => <NotFoundModule {...props} />} />
           </Switch>
         </div>

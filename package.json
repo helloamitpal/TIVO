@@ -83,7 +83,8 @@
     "redux-persist": "5.10.0",
     "redux-thunk": "^2.3.0",
     "request": "^2.88.2",
-    "uuid": "^7.0.3"
+    "uuid": "^7.0.3",
+    "zingchart-react": "^2.1.0"
   },
   "devDependencies": {
     "@babel/cli": "7.1.2",
