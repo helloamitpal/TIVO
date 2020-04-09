@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
@@ -41,12 +41,18 @@ const UserCreatePage = ({
     }
   }, [errors]);
 
+  const resetForm = useCallback(() => {
+    const form = { ...defaultForm };
+    setFormData(form);
+  }, [defaultForm]);
+
   // show success toast message if create user gets success
   useEffect(() => {
     if (createSuccess) {
       toast.success(createSuccess);
+      resetForm();
     }
-  }, [createSuccess]);
+  }, [createSuccess, resetForm]);
 
   const head = (
     <Helmet key="user-create-page">
@@ -67,11 +73,6 @@ const UserCreatePage = ({
     setFormData(form);
   };
 
-  const resetForm = () => {
-    const form = { ...defaultForm };
-    setFormData(form);
-  };
-
   const getChannels = () => {
     const filterdData = packageList.find(({ packageId }) => (formData.packages === packageId));
     const { channel, price } = filterdData;
@@ -80,10 +81,14 @@ const UserCreatePage = ({
     return translate('user.channels', { CHANNELS: channelNames, PRICE: price });
   };
 
-  const isValidForm = () => (Object.values(formData).some((val) => (val.trim())));
+  const isInvalidForm = () => (Object.values(formData).some((val) => (!val.trim())));
 
   const createUser = () => {
     userActions.createUser(formData);
+  };
+
+  const validateEmail = (val) => {
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val);
   };
 
   return (
@@ -97,7 +102,7 @@ const UserCreatePage = ({
         </section>
         <section>
           <span>{translate('user.email')}</span>
-          <Input type="email" value={formData.email} onChange={(val) => onChangeFormData('email', val)} />
+          <Input validate={validateEmail} type="email" value={formData.email} onChange={(val) => onChangeFormData('email', val)} />
         </section>
         <section>
           <span>{translate('user.region')}</span>
@@ -135,7 +140,7 @@ const UserCreatePage = ({
         </section>
         <section className="button-section">
           <button type="button" onClick={resetForm}>{translate('common.reset')}</button>
-          <button type="button" disabled={!isValidForm()} className="red" onClick={createUser}>{translate('user.create')}</button>
+          <button type="button" disabled={isInvalidForm()} className="red" onClick={createUser}>{translate('user.create')}</button>
         </section>
       </form>
     </div>

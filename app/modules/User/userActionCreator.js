@@ -33,6 +33,14 @@ export const getAddons = () => (dispatch, getState, { api }) => {
   });
 };
 
+export const createUser = (formData) => (dispatch, getState, { api }) => {
+  dispatch({
+    type: actionTypes.CREATE_USER,
+    promise: api.post('/api/customerInfo', formData),
+    payload: {}
+  });
+};
+
 export const getUserDetails = (userObj) => (dispatch, getState, { api }) => {
   const { regionCode, package: packageNames, addOnService } = userObj;
 

@@ -19,6 +19,27 @@ const userReducer = (state = initialState, action = '') => {
   const { type, payload } = action;
 
   switch (type) {
+    case actionTypes.CREATE_USER:
+      return handle(state, action, {
+        start: (prevState) => ({
+          ...prevState,
+          errors: '',
+          loading: true
+        }),
+        success: (prevState) => ({
+          ...prevState,
+          createSuccess: translate('user.createUserSuccess')
+        }),
+        failure: (prevState) => ({
+          ...prevState,
+          errors: translate('common.failed')
+        }),
+        finish: (prevState) => ({
+          ...prevState,
+          loading: false
+        })
+      });
+
     case actionTypes.GET_USERS:
       return handle(state, action, {
         start: (prevState) => ({

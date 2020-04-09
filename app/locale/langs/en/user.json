@@ -12,5 +12,6 @@
   "addons": "Addons",
   "create": "Create",
   "channels": "Channels: ${CHANNELS} | Price: ${PRICE}Rs",
-  "select": "Please select"
+  "select": "Please select",
+  "createUserSuccess": "User has been created successfully"
 }
