@@ -87,9 +87,7 @@ const UserCreatePage = ({
     userActions.createUser(formData);
   };
 
-  const validateEmail = (val) => {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val);
-  };
+  const validateEmail = (val) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val));
 
   return (
     <div className="user-create-page-container">
