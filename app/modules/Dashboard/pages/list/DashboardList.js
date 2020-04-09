@@ -57,9 +57,9 @@ const DashboardListPage = ({
       <h1>{translate('dashboard.title')}</h1>
       {dashboardDetails ? (
         <div className="chart-container">
-          <ZingChart data={getChartConfig(dashboardDetails.usersPerRegion, 'hbar', 'Users per region')} />
-          <ZingChart data={getChartConfig(dashboardDetails.usersPerPackage, 'hbar', 'Users per subscribed package')} />
-          <ZingChart data={getChartConfig(dashboardDetails.usersPerAddons, 'bar', 'Users per subscribed addons')} />
+          <ZingChart data={getChartConfig(dashboardDetails.usersPerRegion, 'hbar', translate('dashboard.usersPerRegion'))} />
+          <ZingChart data={getChartConfig(dashboardDetails.usersPerPackage, 'hbar', translate('dashboard.usersPerPackage'))} />
+          <ZingChart data={getChartConfig(dashboardDetails.usersPerAddons, 'bar', translate('dashboard.usersPerAddons'))} />
         </div>
       ) : null}
     </div>
