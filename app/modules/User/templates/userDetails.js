@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import React, { useMemo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
@@ -64,4 +64,4 @@ UserDetails.propTypes = {
   details: PropTypes.object.isRequired
 };
 
-export default useMemo(UserDetails);
+export default UserDetails;

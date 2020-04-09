@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import config from '../config';
 import NotFoundModule from '../modules/NotFound/Loadable';
-// import UserCreateModule from '../modules/User/pages/create/Loadable';
+import UserCreateModule from '../modules/User/pages/create/Loadable';
 import UserListModule from '../modules/User/pages/list/Loadable';
 import DashboardModule from '../modules/Dashboard/pages/list/Loadable';
 import Header from '../components/molecules/Header';
@@ -44,21 +44,20 @@ const Router = () => {
           <Switch>
             <Route
               exact
-              path={config.USER_LIST_PAGE}
-              render={(props) => <UserListModule {...props} />}
-            />
-            <Route
-              exact
               path={config.DASHBOARD_PAGE}
               render={(props) => <DashboardModule {...props} />}
             />
-            {/* <Route
+            <Route
               exact
               path={config.USER_CREATE_PAGE}
               render={(props) => <UserCreateModule {...props} />}
             />
-            */}
-            <Redirect path="/" to={config.USER_LIST_PAGE} />
+            <Route
+              exact
+              path={config.USER_LIST_PAGE}
+              render={(props) => <UserListModule {...props} />}
+            />
+            <Redirect exact path="/" to={config.USER_LIST_PAGE} />
             <Route path="" render={(props) => <NotFoundModule {...props} />} />
           </Switch>
         </div>
