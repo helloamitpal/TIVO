@@ -70,7 +70,7 @@ const userReducer = (state = initialState, action = '') => {
         }),
         success: (prevState) => ({
           ...prevState,
-          regionList: payload ? [...payload] : []
+          regionList: payload ? userService.getSynthesizedRegions([...payload]) : []
         }),
         failure: (prevState) => ({
           ...prevState,

@@ -54,6 +54,11 @@ const Header = ({ onChangeLocale }) => {
                 </Link>
               </li>
               <li>
+                <Link to={config.USER_LIST_PAGE} className="item" onClick={toggleMenu}>
+                  {translate('user.searchUser')}
+                </Link>
+              </li>
+              <li>
                 <Link to={config.DASHBOARD_PAGE} className="item" onClick={toggleMenu}>
                   {translate('dashboard.title')}
                 </Link>
@@ -61,13 +66,18 @@ const Header = ({ onChangeLocale }) => {
             </ul>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               <li>
+                <Link to={config.DASHBOARD_PAGE} className="item">
+                  {translate('dashboard.title')}
+                </Link>
+              </li>
+              <li>
                 <Link to={config.USER_CREATE_PAGE} className="item">
                   {translate('user.createUser')}
                 </Link>
               </li>
               <li>
-                <Link to={config.DASHBOARD_PAGE} className="item">
-                  {translate('dashboard.title')}
+                <Link to={config.USER_LIST_PAGE} className="item icon">
+                  <span className="material-icons">search</span>
                 </Link>
               </li>
             </ul>

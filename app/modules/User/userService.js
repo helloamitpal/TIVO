@@ -21,6 +21,13 @@ const userService = {
     });
 
     return obj;
+  },
+
+  getSynthesizedRegions: (list) => {
+    return list.map(({ regionCode, region, area, Country }) => ({
+      regionCode,
+      region: `${region}, ${area} (${Country})`
+    }));
   }
 };
 

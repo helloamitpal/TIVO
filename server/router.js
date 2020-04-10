@@ -1,3 +1,5 @@
+const uuid = require('uuid');
+
 const logger = require('./util/logger');
 const {
   REDIS_TIVO_ADDONS_SERVICES,
@@ -64,6 +66,42 @@ module.exports = (app, redisClient) => {
 
       logger.info(`customer info is found in Redis store: ${data.length}`);
       res.send(data);
+    });
+  });
+
+  // api to create customer
+  app.post('/api/customerInfo', (req, res) => {
+    const reqBody = req.body;
+
+    if (!reqBody) {
+      throw new Error('Invalid req body found');
+    }
+
+    redisClient.get(REDIS_TIVO_CUSTOMER_INFO, (err, obj) => {
+      if (err) {
+        throw new Error('Something went wrong in fetching customer info');
+      }
+
+      const { name, email, region, packages, addons } = reqBody;
+      const arr = [JSON.parse(obj).customerInfo, {
+        regionCode: region,
+        tsn: `A${uuid.v4()}`,
+        personalInfo: {
+          name,
+          email,
+          img: 'https://webstockreview.net/images/smiley-face-clip-art-human-face-2.png'
+        },
+        package: packages,
+        addOnService: addons
+      }];
+
+      redisClient.set(REDIS_TIVO_CUSTOMER_INFO, JSON.stringify({ customerInfo: arr }), (seterr) => {
+        if (seterr) {
+          throw new Error('Something went wrong in setting customer info');
+        }
+
+        res.send(true);
+      });
     });
   });
 

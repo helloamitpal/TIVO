@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import * as userActionCreator from '../../userActionCreator';
 import LoadingIndicator from '../../../../components/atoms/LoadingIndicator';
 import translate from '../../../../locale';
+import config from '../../../../config';
 import Input from '../../../../components/atoms/Input';
 
 import './UserCreate.scss';
@@ -87,7 +88,7 @@ const UserCreatePage = ({
     userActions.createUser(formData);
   };
 
-  const validateEmail = (val) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val));
+  const validateEmail = (val) => (config.EMAIL_PATTERN.test(val));
 
   return (
     <div className="user-create-page-container">
@@ -115,7 +116,7 @@ const UserCreatePage = ({
         </section>
         <section>
           <span>{translate('user.package')}</span>
-          <select value={formData.packages} onChange={({ target: { value } }) => onChangeFormData('packages', value)}>
+          <select multiple value={formData.packages} onChange={({ target: { value } }) => onChangeFormData('packages', value)}>
             <option value="">{translate('user.select')}</option>
             {
               packageList.map(({ packageId, name }) => (
@@ -127,7 +128,7 @@ const UserCreatePage = ({
         </section>
         <section>
           <span>{translate('user.addons')}</span>
-          <select value={formData.addons} onChange={({ target: { value } }) => onChangeFormData('addons', value)}>
+          <select multiple value={formData.addons} onChange={({ target: { value } }) => onChangeFormData('addons', value)}>
             <option value="">{translate('user.select')}</option>
             {
               addonList.map(({ id, name }) => (
