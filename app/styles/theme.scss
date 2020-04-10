@@ -20,5 +20,7 @@
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
+
 @import '~react-toastify/dist/ReactToastify.css';
+@import '~react-virtualized/styles.css';
 @import './global-styles.scss';

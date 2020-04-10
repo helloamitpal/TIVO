@@ -31,7 +31,7 @@ const UserDetails = ({ details: { regions, tsn, personalInfo: { name, email, img
               <ul className="sub-container">
                 {
                   channel.map(({ channelNumber, name: channelName, img: channelImg }) => (
-                    <li>
+                    <li key={`pkg-${packageId}-${channelNumber}`}>
                       <LazyLoadImage src={channelImg} alt="channel_img" />
                       <p>{channelName}</p>
                     </li>

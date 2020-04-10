@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
-import VirtualList from 'react-tiny-virtual-list';
+import List from 'react-virtualized/dist/es/List';
+import AutoSizer from 'react-virtualized/dist/es/AutoSizer';
+import WindowScroller from 'react-virtualized/dist/es/WindowScroller';
 import { toast } from 'react-toastify';
 
 import * as userActionCreator from '../../userActionCreator';
@@ -56,6 +58,23 @@ const UserListPage = ({
     userActions.getUsers('name', text);
   };
 
+  const listRowRenderer = ({ index, isScrolling, key, style }) => {
+    const { ...rest } = users[index];
+    const rowProps = {
+      index,
+      style,
+      ...rest
+    };
+
+    return (
+      <UserRow
+        key={`list-row-${index.toString()}`}
+        {...rowProps}
+        onClick={onOpenUserDetails}
+      />
+    );
+  };
+
   return (
     <div className="user-page-container">
       {head}
@@ -70,28 +89,23 @@ const UserListPage = ({
         ? <Message description={translate('user.noUserFound')} />
         : (
           <div className="list-container">
-            <VirtualList
-              height={400}
-              width="100%"
-              itemCount={users.length}
-              itemSize={60}
-              renderItem={({ index, style }) => {
-                const { href, ...rest } = users[index];
-                const rowProps = {
-                  index,
-                  style,
-                  ...rest
-                };
-
-                return (
-                  <UserRow
-                    key={`list-row-${index.toString()}`}
-                    {...rowProps}
-                    onClick={onOpenUserDetails}
-                  />
-                );
-              }}
-            />
+            <WindowScroller>
+              {({ height }) => (
+                <AutoSizer disableHeight>
+                  {({ width }) => (
+                    <List
+                      autoHeight
+                      overscanRowCount={10}
+                      rowCount={users.length}
+                      rowHeight={60}
+                      rowRenderer={listRowRenderer}
+                      width={width}
+                      height={height}
+                    />
+                  )}
+                </AutoSizer>
+              )}
+            </WindowScroller>
           </div>
         )
       }

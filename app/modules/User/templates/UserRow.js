@@ -6,7 +6,7 @@ import './UserRow.scss';
 
 const UserRow = ({ personalInfo: { name, email, img }, index, style, className, onClick }) => (
   <div style={style} className={`virtual-row ${className}`}>
-    <LazyLoadImage src={img} alt="user-profile-pic" />
+    <LazyLoadImage src={img} alt="user-profile-pic" visibleByDefault />
     <div className="row-content">
       <div>{name}</div>
       <div>{email}</div>
