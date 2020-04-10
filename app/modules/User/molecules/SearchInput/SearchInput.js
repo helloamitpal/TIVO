@@ -17,6 +17,7 @@ const SearchInput = ({ onSearch, className, placeholder, ...restProps }) => {
     <div className={`search-input-container ${className}`}>
       <Input
         {...restProps}
+        value={text}
         onChange={onChangeSearch}
         placeholder={placeholder}
       />
