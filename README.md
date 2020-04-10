@@ -31,13 +31,17 @@ Icon set: [Material icon](https://material.io/resources/icons/?icon=search&style
 - **Enzyme**: React component testing utility
 - **Webpack**: Webpack module bundler
 
-## Features of this template
+## Features
 
 - Complete UI architecture with mono-repo directories structure
 - Centralised HTTP(S) request and response interceptor
 - Progressive web app (PWA)
+- Analytic service for tracking user's movements and clicks
 - Webpack based module bundler
-- Internationalization or localization support with English and German language
+- Redis data store
+- Lazy loading of images
+- Virtual list for optimizing long list display
+- Internationalization or localization support with English language. Later multiple languages could have added.
 - Used React context to implement Internationalization
 - Offline support with service worker
 - Code splitting with react-loadable
@@ -98,7 +102,7 @@ or change the port number in this file: server/util/port.js
 $ redis-cli
 $ EXISTS REDIS_TIVO_CUSTOMER_INFO
 ```
-If it returns 1 then it is confirmed that the key has been created successfully. Otherwise it would return 0. For more details, please go through this [documentation](https://www.tutorialspoint.com/redis/redis_keys.htm). 
+If it returns 1 then it is confirmed that the key has been created successfully. Otherwise it would return 0. For more details, please go through this [documentation](https://www.tutorialspoint.com/redis/redis_keys.htm).
 
 ## Unit Testing
 

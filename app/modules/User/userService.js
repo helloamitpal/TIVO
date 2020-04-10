@@ -1,34 +1,35 @@
-const userService = {
-  getSynthesizedUserDetails: (payload, addOnServiceListLength, packageListLength) => {
-    const obj = {};
+const getSynthesizedUserDetails = (payload, addOnServiceListLength, packageListLength) => {
+  const obj = {};
 
-    payload.forEach((currentVal, index) => {
-      let attr;
+  payload.forEach((currentVal, index) => {
+    let attr;
 
-      if (index >= 0 && index <= addOnServiceListLength - 1) {
-        attr = 'addOnServices';
-      } else if (index >= addOnServiceListLength && index <= (packageListLength + addOnServiceListLength - 1)) {
-        attr = 'packages';
-      } else {
-        attr = 'regions';
-      }
+    if (index >= 0 && index <= addOnServiceListLength - 1) {
+      attr = 'addOnServices';
+    } else if (index >= addOnServiceListLength && index <= (packageListLength + addOnServiceListLength - 1)) {
+      attr = 'packages';
+    } else {
+      attr = 'regions';
+    }
 
-      if (!obj[attr]) {
-        obj[attr] = [...currentVal];
-      } else {
-        obj[attr] = [...obj[attr], ...currentVal];
-      }
-    });
+    if (!obj[attr]) {
+      obj[attr] = [...currentVal];
+    } else {
+      obj[attr] = [...obj[attr], ...currentVal];
+    }
+  });
 
-    return obj;
-  },
-
-  getSynthesizedRegions: (list) => {
-    return list.map(({ regionCode, region, area, Country }) => ({
-      regionCode,
-      region: `${region}, ${area} (${Country})`
-    }));
-  }
+  return obj;
 };
 
-export default userService;
+const getSynthesizedRegions = (list) => {
+  return list.map(({ regionCode, region, area, Country }) => ({
+    regionCode,
+    region: `${region}, ${area} (${Country})`
+  }));
+};
+
+export default {
+  getSynthesizedUserDetails,
+  getSynthesizedRegions
+};

@@ -12,8 +12,9 @@ import Header from '../components/molecules/Header';
 import Footer from '../components/molecules/Footer';
 import LocaleContext from '../locale/localeContext';
 import { setLocaleCookie } from '../services/cookieService';
+import AnalyticService from '../services/analyticService';
 
-const Router = () => {
+const Router = ({ history }) => {
   const [selectedLocale, setSelectedLocale] = useState(config.FALLBACK_LANGUAGE);
 
   // configuring toaser message
@@ -23,6 +24,13 @@ const Router = () => {
     hideProgressBar: true,
     pauseOnHover: false
   });
+
+  // tracking route for analytics
+  useEffect(() => {
+    history.listen(({ pathname }, action) => {
+      AnalyticService.track(AnalyticService.EVENT.PAGE, `${pathname} route visited`);
+    });
+  }, [history]);
 
   // setting up cookie for default language
   useEffect(() => {

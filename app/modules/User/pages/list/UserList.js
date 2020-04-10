@@ -16,6 +16,7 @@ import translate from '../../../../locale';
 import UserRow from '../../templates/UserRow';
 import UserDetails from '../../templates/UserDetails';
 import SearchInput from '../../molecules/SearchInput';
+import AnalyticService from '../../../../services/analyticService';
 
 import './UserList.scss';
 
@@ -33,6 +34,7 @@ const UserListPage = ({
   // show toast message if any errror occurrs
   useEffect(() => {
     if (errors) {
+      AnalyticService.track(AnalyticService.EVENT.ERROR, 'Error occurred in fetching user list');
       toast.error(errors);
     }
   }, [errors]);
@@ -51,10 +53,12 @@ const UserListPage = ({
 
   const onOpenUserDetails = (index) => {
     setModalOpen(true);
+    AnalyticService.track(AnalyticService.EVENT.DETAILS, 'Open user details');
     userActions.getUserDetails(users[index]);
   };
 
   const onSearchUser = (text) => {
+    AnalyticService.track(AnalyticService.EVENT.SEARCH, 'search user');
     userActions.getUsers('name', text);
   };
 
