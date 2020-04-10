@@ -60,7 +60,7 @@ module.exports = (app, redisClient) => {
       if (err) {
         throw new Error('Something went wrong in fetching customer info');
       }
-
+      console.log(JSON.parse(obj).customerInfo);
       const { find } = req.query;
       const data = getFilteredData(JSON.parse(obj).customerInfo, find);
 
@@ -83,7 +83,8 @@ module.exports = (app, redisClient) => {
       }
 
       const { name, email, region, packages, addons } = reqBody;
-      const arr = [JSON.parse(obj).customerInfo, {
+      const existingData = JSON.parse(obj).customerInfo;
+      const arr = [...existingData, {
         regionCode: region,
         tsn: `A${uuid.v4()}`,
         personalInfo: {
@@ -91,8 +92,8 @@ module.exports = (app, redisClient) => {
           email,
           img: 'https://webstockreview.net/images/smiley-face-clip-art-human-face-2.png'
         },
-        package: packages,
-        addOnService: addons
+        package: packages.join(','),
+        addOnService: addons.join(',')
       }];
 
       redisClient.set(REDIS_TIVO_CUSTOMER_INFO, JSON.stringify({ customerInfo: arr }), (seterr) => {

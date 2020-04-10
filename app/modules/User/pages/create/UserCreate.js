@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Helmet } from 'react-helmet';
@@ -42,41 +42,27 @@ const UserCreatePage = ({
     }
   }, [errors]);
 
-  const resetForm = useCallback(() => {
-    const form = { ...defaultForm };
-    setFormData(form);
-  }, [defaultForm]);
-
   // show success toast message if create user gets success
   useEffect(() => {
     if (createSuccess) {
       toast.success(createSuccess);
-      resetForm();
     }
-  }, [createSuccess, resetForm]);
+  }, [createSuccess]);
 
-  const head = (
-    <Helmet key="user-create-page">
-      <title>{translate('user.createUser')}</title>
-      <meta property="og:title" content="User create" />
-      <meta
-        name="description"
-        content="Create user in TIVO"
-      />
-      <meta name="robots" content="index, follow" />
-    </Helmet>
-  );
+  const resetForm = () => {
+    const form = { ...defaultForm };
+    setFormData(form);
+  };
 
   const onChangeFormData = (attr, val) => {
     const form = { ...formData };
-    let formAttr = form[attr];
 
     if (attr === 'packages' || attr === 'addons') {
       // fetching selected values from multi-select box
-      formAttr = Array.from(val, ({ value }) => (value));
+      val = Array.from(val, ({ value }) => (value));
     }
 
-    form[attr] = (formAttr instanceof Array) ? [...formAttr, val] : val;
+    form[attr] = val;
     setFormData(form);
   };
 
@@ -103,13 +89,28 @@ const UserCreatePage = ({
     return '';
   };
 
-  const isInvalidForm = () => (Object.values(formData).some((val) => (!val.trim())));
+  const isInvalidForm = () => (Object.values(formData).some((val) => (
+    (val instanceof Array) ? val.length === 0 : !val.trim()
+  )));
 
   const createUser = () => {
-    userActions.createUser(formData);
+    userActions.createUser({ ...formData });
+    resetForm();
   };
 
   const validateEmail = (val) => (config.EMAIL_PATTERN.test(val));
+
+  const head = (
+    <Helmet key="user-create-page">
+      <title>{translate('user.createUser')}</title>
+      <meta property="og:title" content="User create" />
+      <meta
+        name="description"
+        content="Create user in TIVO"
+      />
+      <meta name="robots" content="index, follow" />
+    </Helmet>
+  );
 
   return (
     <div className="user-create-page-container">

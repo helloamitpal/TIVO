@@ -24,6 +24,7 @@ const userReducer = (state = initialState, action = '') => {
         start: (prevState) => ({
           ...prevState,
           errors: '',
+          createSuccess: '',
           loading: true
         }),
         success: (prevState) => ({
@@ -45,6 +46,7 @@ const userReducer = (state = initialState, action = '') => {
         start: (prevState) => ({
           ...prevState,
           errors: '',
+          users: [],
           loading: true
         }),
         success: (prevState) => ({
@@ -66,6 +68,7 @@ const userReducer = (state = initialState, action = '') => {
         start: (prevState) => ({
           ...prevState,
           errors: '',
+          createSuccess: '',
           loading: true
         }),
         success: (prevState) => ({

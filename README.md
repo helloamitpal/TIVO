@@ -92,6 +92,14 @@ or change the port number in this file: server/util/port.js
 
 **NOTE**: If any new locale texts are added, please re-execute the npm start command
 
+**NOTE**: If you want to check whether all redis keys have been created or not, please execute these commands.
+
+```sh
+$ redis-cli
+$ EXISTS REDIS_TIVO_CUSTOMER_INFO
+```
+If it returns 1 then it is confirmed that the key has been created successfully. Otherwise it would return 0. For more details, please go through this [documentation](https://www.tutorialspoint.com/redis/redis_keys.htm). 
+
 ## Unit Testing
 
 Use the following commands to execute the test cases
