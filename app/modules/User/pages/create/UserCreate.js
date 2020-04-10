@@ -23,8 +23,8 @@ const UserCreatePage = ({
     name: '',
     email: '',
     region: '',
-    packages: '',
-    addons: ''
+    packages: [],
+    addons: []
   };
   const [formData, setFormData] = useState({ ...defaultForm });
 
@@ -69,17 +69,38 @@ const UserCreatePage = ({
 
   const onChangeFormData = (attr, val) => {
     const form = { ...formData };
+    let formAttr = form[attr];
 
-    form[attr] = val;
+    if (attr === 'packages' || attr === 'addons') {
+      // fetching selected values from multi-select box
+      formAttr = Array.from(val, ({ value }) => (value));
+    }
+
+    form[attr] = (formAttr instanceof Array) ? [...formAttr, val] : val;
     setFormData(form);
   };
 
   const getChannels = () => {
-    const filterdData = packageList.find(({ packageId }) => (formData.packages === packageId));
-    const { channel, price } = filterdData;
-    const channelNames = channel.map(({ name }) => (name)).join(', ');
+    if (formData.packages.length === 0) {
+      return '';
+    }
 
-    return translate('user.channels', { CHANNELS: channelNames, PRICE: price });
+    const filterdData = packageList.reduce((acc, { packageId, channel, price }) => {
+      if (formData.packages.includes(packageId)) {
+        let channels = channel.map(({ name }) => (name)).join(', ');
+        const totalPrice = (acc.totalPrice || 0) + Number(price);
+
+        channels = acc.channels ? [acc.channels || '', channels].join(', ') : channels;
+        return { channels, totalPrice };
+      }
+      return acc;
+    }, {});
+
+    if (filterdData.channels) {
+      return translate('user.channels', { CHANNELS: filterdData.channels, PRICE: filterdData.totalPrice });
+    }
+
+    return '';
   };
 
   const isInvalidForm = () => (Object.values(formData).some((val) => (!val.trim())));
@@ -116,7 +137,7 @@ const UserCreatePage = ({
         </section>
         <section>
           <span>{translate('user.package')}</span>
-          <select multiple value={formData.packages} onChange={({ target: { value } }) => onChangeFormData('packages', value)}>
+          <select multiple value={formData.packages} onChange={({ target: { selectedOptions } }) => onChangeFormData('packages', selectedOptions)}>
             <option value="">{translate('user.select')}</option>
             {
               packageList.map(({ packageId, name }) => (
@@ -128,7 +149,7 @@ const UserCreatePage = ({
         </section>
         <section>
           <span>{translate('user.addons')}</span>
-          <select multiple value={formData.addons} onChange={({ target: { value } }) => onChangeFormData('addons', value)}>
+          <select multiple value={formData.addons} onChange={({ target: { selectedOptions } }) => onChangeFormData('addons', selectedOptions)}>
             <option value="">{translate('user.select')}</option>
             {
               addonList.map(({ id, name }) => (
